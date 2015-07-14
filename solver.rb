@@ -4,40 +4,45 @@ end
 
 
 class Puzzle
+  attr_accessor :cells
   def initialize
-    @puzzle_coord_hash = {}
+    @cells = [[]]
+    
   end
   def load(puzzle_string_array)
-    puzzle_coord_hash = {}
 
     puzzle_string_array.each_with_index do |line, line_number|
-      line = add_trailing_whitespace(line)
-      line_hash = convert_line_to_hash(line, line_number)
-      puzzle_coord_hash = puzzle_coord_hash.merge(line_hash)
-    end
-    @puzzle_coord_hash = puzzle_coord_hash
-    return puzzle_coord_hash
-
-  end
-
-  def convert_line_to_hash(line, line_number)
-    hash = {}
-    line.split('').each_with_index do |char, index|
-      unless char == "\n"
-        hash[[index, line_number]] = char
+      line.split('').each do |char|
+        @cells[line] <<
+        
       end
+      
+      
     end
-    return hash
   end
+
+  
   
   def add_trailing_whitespace(line)
     line.gsub!("\n", " ")
     line.ljust(9)
     
   end
-  def get_cell_value(coord)
-    @puzzle_coord_hash[coord]
-  end
-
+  
 
 end
+class Cell
+  attr_accessor :value, :possibilities, :is_a_given
+  def initialize(value, coord)
+    @value =  value
+    @possibilities = [1..9]
+    @is_a_given = true
+  end
+end
+
+#ask dont tell
+#I want to call a cell like this
+# puzzle.cell[0,8].value => 8
+# puzzle.cell[0,8].possibilities => [0,4,1,5]
+# puzzle.cell[0,8].get_row_neighbors => [0,9,3]
+# puzzle.cell[0,8].c
