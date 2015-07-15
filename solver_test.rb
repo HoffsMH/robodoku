@@ -135,13 +135,55 @@ describe Puzzle do
     
     
   end
-  describe ".get_box_neighbors(cell)" do
-    it "returns the value of every non blank cell in a zone for a given cell as an array" do
-        
-    end
+  describe ".get_box_row_limits(cell)" do
+    it "returns the upper and lower bounds of a box in rows" do
+      puzzle = Puzzle.new
+      puzzle_string_array = File.readlines('solved_puzzles/puzzle1.txt')
+      # puzzle_string_
+      puzzle.load(puzzle_string_array)
+      expected = [0,2]
+      result =   puzzle.get_box_row_limits(puzzle.cells[1][1])
+      
+      assert_equal(expected, result)       
+    end     
   end
-  
-  
-  
+  describe ".get_box_column_limits(cell)" do
+    it "returns the upper and lower bounds of a box in columns" do
+      puzzle = Puzzle.new
+      puzzle_string_array = File.readlines('solved_puzzles/puzzle1.txt')
+      # puzzle_string_
+      puzzle.load(puzzle_string_array)
+      expected = [3,5]
+      result =   puzzle.get_box_column_limits(puzzle.cells[5][5])
+      
+      assert_equal(expected, result)       
+    end     
+  end
+  describe ".get_box_neighbors(cell)" do
+    it "returns the value of every non blank cell in a given box as an array" do
+      puzzle = Puzzle.new
+      puzzle_string_array = File.readlines('solved_puzzles/puzzle1.txt')
+      # puzzle_string_
+      puzzle.load(puzzle_string_array)
+      expected = ["1","3","4","2","7"].sort
+      result =   puzzle.get_box_neighbors(puzzle.cells[3][0])
+      
+      
+      assert_equal(expected, result) 
+    end
+    
+    it "returns the value of every non blank cell in a given box as an array number 2" do
+      puzzle = Puzzle.new
+      puzzle_string_array = File.readlines('solved_puzzles/puzzle1.txt')
+      # puzzle_string_
+      puzzle.load(puzzle_string_array)
+      expected = ["8","5","1"].sort
+      result =   puzzle.get_box_neighbors(puzzle.cells[8][8])
+      
+      
+      assert_equal(expected, result) 
+    end
+    
+  end
   
 end
