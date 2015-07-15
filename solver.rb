@@ -1,3 +1,4 @@
+require 'pry'
 class Solver
 
 end
@@ -6,19 +7,21 @@ end
 class Puzzle
   attr_accessor :cells
   def initialize
-    @cells = [[]]
+    @cells = []
     
   end
   def load(puzzle_string_array)
 
-    puzzle_string_array.each_with_index do |line, line_number|
-      line.split('').each do |char|
-        @cells[line] <<
+    @cells = puzzle_string_array.map.with_index(0) do |line, line_number|     
+
+        row_of_cells = line.split('').map do |char|
+          Cell.new(char)
+        end
+        row_of_cells
         
-      end
-      
-      
+        
     end
+
   end
 
   
@@ -33,11 +36,12 @@ class Puzzle
 end
 class Cell
   attr_accessor :value, :possibilities, :is_a_given
-  def initialize(value, coord)
+  def initialize(value)
     @value =  value
     @possibilities = [1..9]
     @is_a_given = true
   end
+  
 end
 
 #ask dont tell
@@ -46,3 +50,5 @@ end
 # puzzle.cell[0,8].possibilities => [0,4,1,5]
 # puzzle.cell[0,8].get_row_neighbors => [0,9,3]
 # puzzle.cell[0,8].c
+      # 0                         1
+# [[cell0, cell1, cell2], [cell0,cell1,cell2]]
