@@ -51,17 +51,6 @@ describe Cell do
     
   end
   
-  describe ".get_column_neighbors(cell)" do
-    it "returns the value of every non blank cell in a column for a given cell as an array"
-    
-  end
-  describe ".get_row_neighbors(cell)" do
-    it "returns the value of every non blank cell in a row for a given cell as an array"
-    
-  end
-  describe ".get_box_neighbors(cell)" do
-    it "returns the value of every non blank cell in a zone for a given cell as an array"
-  end
   describe ".write(cell, number)" do
     it "it writes a number to a cell, changing the puzzle object"
   end
@@ -78,8 +67,7 @@ describe Puzzle do
   describe ".add_trailing_whitespace(line)" do
     it "adds trailing whitespace to line before parsing it into cell objects" do
       puzzle = Puzzle.new
-      line_string = " 1 9
-"
+      line_string = " 1 9\n"
       
       expected = " 1 9     "
       result = puzzle.add_trailing_whitespace(line_string)
@@ -105,7 +93,7 @@ describe Puzzle do
       
     end
     it "loads a full sudoku puzzle of cell objects" do
-      skip
+      
       puzzle = Puzzle.new
       puzzle_string_array = File.readlines('solved_puzzles/puzzle1.txt')
       # puzzle_string_
@@ -118,6 +106,27 @@ describe Puzzle do
     end    
     
     
+  end
+  
+  describe ".get_column_neighbors(cell)" do
+    it "returns the value of every non blank cell in a column for a given cell as an array" do
+      puzzle = Puzzle.new
+      puzzle_string_array = File.readlines('solved_puzzles/puzzle1.txt')
+      # puzzle_string_
+      puzzle.load(puzzle_string_array)
+      expected = [1,2,6]
+      result =   puzzle.get_column_neighbors(puzzle.cells[0][0])     
+      
+      assert_equal(expected, result)
+    end
+    
+  end
+  describe ".get_row_neighbors(cell)" do
+    it "returns the value of every non blank cell in a row for a given cell as an array"
+    
+  end
+  describe ".get_box_neighbors(cell)" do
+    it "returns the value of every non blank cell in a zone for a given cell as an array"
   end
   
   
