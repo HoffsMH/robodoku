@@ -58,7 +58,20 @@ describe Cell do
     it "returns whether or not a cell (that has a value or is blank) has been changed with the write method"
   end
   describe ".to_str" do
-    it "prints out a puzzles current state.. solved or unsolved"
+    it "prints out a puzzles current state.. solved or unsolved" do
+      puzzle = Puzzle.new
+      puzzle_string_array = File.readlines('solved_puzzles/puzzle1.txt')
+      
+      puzzle.load(puzzle_string_array)
+      
+      result = puzzle.to_str
+      expected = "8  5 4  7\n  5 3 9  \n 9 7 1 6 \n1 3   2 8\n 4     5 \n2 78136 4\n 3 9 2 8 \n  2 7 5  \n6  3 5  1\n"
+      
+      assert_equal(expected, result)
+      # puts puzzle.to_str
+      
+      
+    end
   end
   
 end

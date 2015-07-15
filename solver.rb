@@ -8,14 +8,14 @@ end
 
 
 class Puzzle
-  attr_accessor :cells
+  attr_accessor :cells, :puzzle_string_array
   ee = 2
   def initialize
     @cells = []     
   end
   
   def load(puzzle_string_array)     
-    
+    @puzzle_string_array = puzzle_string_array
     @cells = puzzle_string_array.map.with_index(0) do |line, line_number|       
       line = add_trailing_whitespace(line)
       split_row(line, line_number)
@@ -103,9 +103,13 @@ class Puzzle
     box_cell_values = box_cells.map do |this_cell|
       this_cell.value
     end
-    box_cell_values.sort
-    
-    
+    box_cell_values.sort     
+  end
+  
+  def to_str
+    @puzzle_string_array.reduce do |string, accum|
+      (add_trailing_whitespace(accum) + "\n") + (string)
+    end
     
   end
   
