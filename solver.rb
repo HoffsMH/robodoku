@@ -15,14 +15,16 @@ class Puzzle
   end
   
   def load(puzzle_string_array)     
+    
     @cells = puzzle_string_array.map.with_index(0) do |line, line_number|       
-        get_row(line)
+      line = add_trailing_whitespace(line)
+      split_row(line, line_number)
     end
     
   end
-  def get_row(line)
-    line.split('').map do |char|
-      Cell.new(char)   
+  def split_row(line, line_number)
+    line.split('').map.with_index(0) do |char, char_number|
+      Cell.new(char, line_number, char_number)   
     end
   end
   
@@ -36,18 +38,35 @@ class Puzzle
   
   
   def get_column_neighbors(cell)
-    self
-    
+    column =  @cells.map do |this_cell|
+      this_cell[cell.column].value
+    end
+    column.delete(" ")
+    column.delete(cell.value)
+    column
+  end
+  
+  def get_row_neighbors(cell)
+    row = @cells[cell.row].map do |this_cell|
+      this_cell.value
+    end
+    row.delete(" ")
+    row.delete(cell.value)
+    row     
+  end
+  def get_box_neighbors(cell)
   end
   
   
 end
 class Cell
-  attr_accessor :value, :possibilities, :is_a_given
-  def initialize(value)
+  attr_accessor :value, :possibilities, :is_a_given, :row, :column
+  def initialize(value, row, column)
     @value =  value
     @possibilities = [1..9]
     @is_a_given = true
+    @row = row
+    @column = column
   end
   
   

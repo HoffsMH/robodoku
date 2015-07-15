@@ -32,7 +32,7 @@ end
 describe Cell do
   describe '.new(value)' do
     it "instantiates a new cell object" do
-      cell0 = Cell.new('h')
+      cell0 = Cell.new('h', 0,0)
       expected = Cell
       result = cell0.class
       
@@ -42,7 +42,7 @@ describe Cell do
   end
   describe '.value' do
     it 'it returns the value of the given cell' do
-      cell0 = Cell.new('h')
+      cell0 = Cell.new('h', 0,0)
       expected = 'h'
       result = cell0.value
       
@@ -114,7 +114,7 @@ describe Puzzle do
       puzzle_string_array = File.readlines('solved_puzzles/puzzle1.txt')
       # puzzle_string_
       puzzle.load(puzzle_string_array)
-      expected = [1,2,6]
+      expected = ["1","2","6"]
       result =   puzzle.get_column_neighbors(puzzle.cells[0][0])     
       
       assert_equal(expected, result)
@@ -122,11 +122,23 @@ describe Puzzle do
     
   end
   describe ".get_row_neighbors(cell)" do
-    it "returns the value of every non blank cell in a row for a given cell as an array"
+    it "returns the value of every non blank cell in a row for a given cell as an array" do
+      puzzle = Puzzle.new
+      puzzle_string_array = File.readlines('solved_puzzles/puzzle1.txt')
+      # puzzle_string_
+      puzzle.load(puzzle_string_array)
+      expected = ["3","9"]
+      result =   puzzle.get_row_neighbors(puzzle.cells[1][2])     
+      
+        assert_equal(expected, result)
+    end
+    
     
   end
   describe ".get_box_neighbors(cell)" do
-    it "returns the value of every non blank cell in a zone for a given cell as an array"
+    it "returns the value of every non blank cell in a zone for a given cell as an array" do
+        
+    end
   end
   
   
