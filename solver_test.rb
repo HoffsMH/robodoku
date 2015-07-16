@@ -10,7 +10,7 @@ describe Solver do
   
   
   describe ".solve(puzzle string)" do
-    it "hands a puzzle object to load()"
+  
     it "returns a puzzle object" do
       puzzle = Puzzle.new
       solver = Solver.new
@@ -250,7 +250,29 @@ describe Puzzle do
     
   end
   describe ".solved?" do
-    it "returns whether or not a puzzle is solved" do
+    it "returns whether or not a puzzle is solved (it is solved)" do
+      puzzle = Puzzle.new
+      puzzle_string_array = File.readlines('solved_puzzles/puzzle1_solved.txt')
+      
+      puzzle.load(puzzle_string_array)
+      expected = true
+      result =   puzzle.solved?
+      
+      
+      assert_equal(expected, result)
+      
+    end
+    
+    it "returns whether or not a puzzle is solved (it is solved)" do
+      puzzle = Puzzle.new
+      puzzle_string_array = File.readlines('solved_puzzles/puzzle1.txt')
+      
+      puzzle.load(puzzle_string_array)
+      expected = false
+      result =   puzzle.solved?
+      
+      
+      assert_equal(expected, result)
       
     end
     
