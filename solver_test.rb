@@ -107,6 +107,10 @@ describe Cell do
     end
   end
   
+  
+end
+describe Puzzle do
+  
   describe ".to_str" do
     it "prints out a puzzles current state.. solved or unsolved" do
       puzzle = Puzzle.new
@@ -124,10 +128,6 @@ describe Cell do
       
     end
   end
-  
-end
-describe Puzzle do
-  
   describe ".add_trailing_whitespace(line)" do
     it "adds trailing whitespace to line before parsing it into cell objects" do
       puzzle = Puzzle.new
@@ -249,5 +249,10 @@ describe Puzzle do
     end
     
   end
-  
+  describe ".solved?" do
+    it "returns whether or not a puzzle is solved" do
+      
+    end
+    
+  end
 end

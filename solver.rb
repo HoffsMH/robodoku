@@ -7,14 +7,14 @@ class Solver
     @puzzle.load(puzzle_string_array)
     
     pass_counter = 0
-    while !@puzzle.solved? && pass_counter <= 1000 do 
+    while !@puzzle.solved? && pass_counter <= 200 do 
       make_pass(@puzzle)
       pass_counter += 1       
     end
     
     #output
-    puts "\n"
-    puts @puzzle.to_str
+    
+     @puzzle.to_str
     
   end
   
@@ -22,12 +22,14 @@ class Solver
     cells = puzzle.cells.flatten
     
     cells.each do |cell|
-      cell.possibilities = deduce(@puzzle, cell) 
-      #the reason I am deducing even if the cell already has a value
-      #is that in later versions I plan for a value to be "penciled in"
-      #as a guess for dependancy logic
-      if cell.value == " " && cell.possibilities.length == 1
-        cell.write(cell.possibilities[0])         
+      #combining these if statements and deducing cell possibilities
+      # up here results in significant performance loss
+      
+      if cell.value == " " 
+        cell.possibilities = deduce(@puzzle, cell) 
+        if cell.possibilities.length == 1
+          cell.write(cell.possibilities[0])         
+        end
       end
       
     end
@@ -37,6 +39,7 @@ class Solver
     cell.possibilities -= puzzle.get_row_neighbors(cell)
     cell.possibilities -= puzzle.get_column_neighbors(cell)
     cell.possibilities -= puzzle.get_box_neighbors(cell)
+    cell.possibilities
     
   end
   
@@ -51,7 +54,7 @@ class Puzzle
     @solved = false   
   end
   def solved?
-    @solved
+    @solved = @cells.flatten.none? { |cell|  cell.value == ' '}
   end
   
   def load(puzzle_string_array)     
