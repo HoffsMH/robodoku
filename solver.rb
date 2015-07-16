@@ -1,17 +1,57 @@
 require 'pry'
+
 class Solver
+  attr_accessor :puzzle
   def solve(puzzle_string_array)
-    puzzle =  Puzzle.new
-    puzzle.load(puzzle_string_array)
+    @puzzle =  Puzzle.new
+    @puzzle.load(puzzle_string_array)
+    
+    pass_counter = 0
+    while !@puzzle.solved? && pass_counter <= 1000 do 
+      make_pass(@puzzle)
+      pass_counter += 1       
+    end
+    
+    #output
+    puts "\n"
+    puts @puzzle.to_str
+    
   end
+  
+  def make_pass(puzzle)
+    cells = puzzle.cells.flatten
+    
+    cells.each do |cell|
+      cell.possibilities = deduce(@puzzle, cell) 
+      #the reason I am deducing even if the cell already has a value
+      #is that in later versions I plan for a value to be "penciled in"
+      #as a guess for dependancy logic
+      if cell.value == " " && cell.possibilities.length == 1
+        cell.write(cell.possibilities[0])         
+      end
+      
+    end
+  end
+  
+  def deduce(puzzle, cell)
+    cell.possibilities -= puzzle.get_row_neighbors(cell)
+    cell.possibilities -= puzzle.get_column_neighbors(cell)
+    cell.possibilities -= puzzle.get_box_neighbors(cell)
+    
+  end
+  
 end
 
 
 class Puzzle
-  attr_accessor :cells, :puzzle_string_array
-  ee = 2
+  attr_accessor :cells, :puzzle_string_array, :solved
+  
   def initialize
-    @cells = []     
+    @cells = []  
+    @solved = false   
+  end
+  def solved?
+    @solved
   end
   
   def load(puzzle_string_array)     
@@ -31,7 +71,7 @@ class Puzzle
   
   
   def add_trailing_whitespace(line)
-    line.gsub!("\n", " ")
+    line.gsub!("\n", "")
     line.ljust(9)
     
   end
@@ -107,17 +147,20 @@ class Puzzle
   end
   
   def to_str
-    @puzzle_string_array.reduce do |string, accum|
-      (add_trailing_whitespace(accum) + "\n") + (string)
+    output = ""
+    @cells.each do |row|
+      row.each do |cell|
+        output << cell.value
+        
+      end
+      output << "\n"
     end
+    output
     
-  end
-  
-  
-  
+  end   
 end
 class Cell
-  attr_accessor :value, :possibilities, :is_a_given, :row, :column
+  attr_accessor :value, :possibilities, :is_a_given, :row, :column, :given
   def initialize(value, row, column)
     @value =  value
     @possibilities = ["1","2","3","4","5","6","7","8","9"]
@@ -125,11 +168,15 @@ class Cell
     @row = row
     @column = column
   end   
+  def write(value)
+    @value = value
+    @is_a_given = false
+  end
 end
 
 #tell dont ask
 #I want to call a cell like this
-# puzzle.cell[0,8].value => 8
+# @puzzle.cell[0,8].value => 8
 # puzzle.cell[0,8].possibilities => [0,4,1,5]
 # puzzle.cell[0][8].get_row_neighbors => [0,9,3]
 # puzzle.cell[0,8].c
